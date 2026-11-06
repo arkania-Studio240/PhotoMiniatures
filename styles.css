@@ -52,3 +52,5 @@ body[data-sh=left] #left{display:block}body[data-sh=props] #right,body[data-sh=l
 .sec label{display:flex;justify-content:space-between;align-items:center;margin:8px 0;grid-column:1/-1;color:#c3c8d0}
 #props details{border:1px solid var(--bd);border-radius:10px;padding:6px 10px;margin:6px 0;background:var(--p2)}#props summary{cursor:pointer;font-weight:600;padding:4px 0}
 #props textarea{width:130px;background:var(--p2);color:var(--tx);border:1px solid var(--bd);border-radius:8px;padding:6px;font:inherit;resize:vertical}
+
+#hist{max-height:220px;overflow:auto}#hist .ly{padding:5px 8px;border-radius:8px;cursor:pointer;border:1px solid transparent;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}#hist .ly:hover{background:var(--p2)}#hist .ly.on{background:#4c8dff26;border-color:#4c8dff55}#hist .fut{opacity:.45}body[data-sh=props] #secH{display:none}

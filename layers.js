@@ -1,6 +1,8 @@
 const L={layers:[],sel:null,ms:[],u:[],r:[],imgs:{},n:0,id:'p'+Date.now(),
 snap(){this.u.push(JSON.stringify(this.layers));if(this.u.length>25)this.u.shift();this.r=[]},
 undo(){if(!this.u.length)return;this.r.push(JSON.stringify(this.layers));this.layers=JSON.parse(this.u.pop());this.sel=null;this.ms=[]},
+states(){return[...this.u,JSON.stringify(this.layers),...[...this.r].reverse()]},
+goto(i){const a=this.states();if(i<0||i>=a.length)return;this.u=a.slice(0,i);this.r=a.slice(i+1).reverse();this.layers=JSON.parse(a[i]);this.sel=null;this.ms=[]},
 redo(){if(!this.r.length)return;this.u.push(JSON.stringify(this.layers));this.layers=JSON.parse(this.r.pop());this.sel=null;this.ms=[]},
 ser(){return this.layers.map(l=>{const o=Object.assign({},l);if(o.src&&o.src.startsWith('paint:'))o.src=this.imgs[o.src].toDataURL();if(o.lm&&o.lm.startsWith('mask:'))o.lm=this.imgs[o.lm].toDataURL();return o})},
 get(){return this.layers.find(l=>l.id===this.sel)},
