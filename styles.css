@@ -54,3 +54,4 @@ body[data-sh=left] #left{display:block}body[data-sh=props] #right,body[data-sh=l
 #props textarea{width:130px;background:var(--p2);color:var(--tx);border:1px solid var(--bd);border-radius:8px;padding:6px;font:inherit;resize:vertical}
 
 #hist{max-height:220px;overflow:auto}#hist .ly{padding:5px 8px;border-radius:8px;cursor:pointer;border:1px solid transparent;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}#hist .ly:hover{background:var(--p2)}#hist .ly.on{background:#4c8dff26;border-color:#4c8dff55}#hist .fut{opacity:.45}body[data-sh=props] #secH{display:none}
+.hint{display:block;color:var(--mut);font-size:11px;line-height:1.4;padding:5px 2px;grid-column:1/-1}
