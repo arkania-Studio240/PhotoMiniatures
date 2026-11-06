@@ -1,6 +1,6 @@
 /* Efectos de capa adicionales: segundo contorno, extrusión 3D y separación RGB. Se aplican en Ed.draw vía Ed.extra. */
 Ed.extra=function(l,R){
- const W=1280,H=720,tint=(src,color,dst)=>{const x=dst.getContext('2d');x.globalCompositeOperation='source-over';x.clearRect(0,0,W,H);x.drawImage(src,0,0);x.globalCompositeOperation='source-in';x.fillStyle=color;x.fillRect(0,0,W,H);x.globalCompositeOperation='source-over'};
+ const W=CW,H=CH,tint=(src,color,dst)=>{const x=dst.getContext('2d');x.globalCompositeOperation='source-over';x.clearRect(0,0,W,H);x.drawImage(src,0,0);x.globalCompositeOperation='source-in';x.fillStyle=color;x.fillRect(0,0,W,H);x.globalCompositeOperation='source-over'};
  let out=R;
  if(l.e_s2){const r=l.e_s2s??8,S=this.pool(4),T=this.pool(5),t=T.getContext('2d');tint(out,l.e_s2c||'#ffffff',S);t.clearRect(0,0,W,H);for(let k=0;k<16;k++){const a=k/16*6.2832;t.drawImage(S,Math.cos(a)*r,Math.sin(a)*r)}for(let k=0;k<8;k++){const a=k/8*6.2832;t.drawImage(S,Math.cos(a)*r/2,Math.sin(a)*r/2)}t.drawImage(out,0,0);out=T}
  if(l.e_ex){const d=l.e_exd??20,a=(l.e_exa??45)*Math.PI/180,S=this.pool(4),T=this.pool(6),t=T.getContext('2d'),st=Math.max(1,d/40);tint(out,l.e_exc||'#8a1c1f',S);t.clearRect(0,0,W,H);for(let k=d;k>=1;k-=st)t.drawImage(S,Math.cos(a)*k,Math.sin(a)*k);t.drawImage(out,0,0);out=T}

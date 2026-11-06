@@ -1,3 +1,3 @@
 const Exp={run(type,q,tr){const c=this.canvas(tr),ext={'image/png':'.png','image/webp':'.webp'}[type]||'.jpg';c.toBlob(b=>{const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=(document.getElementById('pname').value||'miniatura')+(tr?'-transparente':'')+ext;a.click();App.toast('Exportado '+(b.size/1024|0)+' KB')},type,q)},
 run2mb(){const c=this.canvas();let q=.95;const go=()=>c.toBlob(b=>{if(b.size>2e6&&q>.3){q-=.07;go()}else{const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=(document.getElementById('pname').value||'miniatura')+'.jpg';a.click();App.toast('JPG '+(b.size/1024|0)+' KB (calidad '+Math.round(q*100)+'%)')}},'image/jpeg',q);go()},
-canvas(tr){const c=document.createElement('canvas');c.width=1280;c.height=720;Ed.draw(c.getContext('2d'),true,tr);return c}};
+canvas(tr){const c=document.createElement('canvas');c.width=CW;c.height=CH;Ed.draw(c.getContext('2d'),true,tr);return c}};

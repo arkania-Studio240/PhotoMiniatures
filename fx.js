@@ -21,9 +21,9 @@ inv:{t:'Invertir colores',p:[],f(d){for(let i=0;i<d.length;i+=4){d[i]=255-d[i];d
 autoc:{t:'Auto-contraste',p:[],f(d){for(let c=0;c<3;c++){const hs=new Uint32Array(256);let n=0;for(let i=c;i<d.length;i+=4)if(d[i+3-c]){hs[d[i]]++;n++}if(!n)continue;let lo=0,hi=255,a=0;for(;lo<255&&a+hs[lo]<n*.01;lo++)a+=hs[lo];a=0;for(;hi>0&&a+hs[hi]<n*.01;hi--)a+=hs[hi];if(hi<=lo)continue;for(let i=c;i<d.length;i+=4)d[i]=(d[i]-lo)*255/(hi-lo)}}},
 calar:{t:'Calar selección',sel:true,p:[['r','Calar (px)',1,60,10]],f(d,w,h,p){Fx.blur(d,w,h,p.r,3)}}},
 apply(name,p){const D=this.defs[name],l=L.get();
-if(D.sel){if(!Ed.sel)return App.toast('Primero haz una selección');const c=Ed.cloneOf(Ed.sel),x=c.getContext('2d'),id=x.getImageData(0,0,1280,720);D.f(id.data,1280,720,p,1);x.putImageData(id,0,0);Ed.sel=c;Ed.selPath=null;Ed.selTint();Ed.sched();return}
+if(D.sel){if(!Ed.sel)return App.toast('Primero haz una selección');const c=Ed.cloneOf(Ed.sel),x=c.getContext('2d'),id=x.getImageData(0,0,CW,CH);D.f(id.data,CW,CH,p,1);x.putImageData(id,0,0);Ed.sel=c;Ed.selPath=null;Ed.selTint();Ed.sched();return}
 if(!l)return App.toast('Selecciona una capa');L.snap();if(!l.paint)App.toast('Capa convertida a píxeles');
-const src=l.paint?Ed.cloneOf(L.img(l.src)):Ed.raster(l),x=src.getContext('2d'),orig=Ed.cloneOf(src),id=x.getImageData(0,0,1280,720);D.f(id.data,1280,720,p,1);x.putImageData(id,0,0);
+const src=l.paint?Ed.cloneOf(L.img(l.src)):Ed.raster(l),x=src.getContext('2d'),orig=Ed.cloneOf(src),id=x.getImageData(0,0,CW,CH);D.f(id.data,CW,CH,p,1);x.putImageData(id,0,0);
 let out=src;if(Ed.sel){out=Ed.cloneOf(orig);const o=out.getContext('2d');o.globalCompositeOperation='destination-out';o.drawImage(Ed.sel,0,0);const t=Ed.cloneOf(src),tx=t.getContext('2d');tx.globalCompositeOperation='destination-in';tx.drawImage(Ed.sel,0,0);o.globalCompositeOperation='source-over';o.drawImage(t,0,0)}
 l.src=Ed.reg('paint',out);App.refresh()},
 open(name){const D=this.defs[name],l=L.get();if(!D.p.length)return this.apply(name,{});if(!D.sel&&!l)return App.toast('Selecciona una capa');

@@ -6,7 +6,7 @@ goto(i){const a=this.states();if(i<0||i>=a.length)return;this.u=a.slice(0,i);thi
 redo(){if(!this.r.length)return;this.u.push(JSON.stringify(this.layers));this.layers=JSON.parse(this.r.pop());this.sel=null;this.ms=[]},
 ser(){return this.layers.map(l=>{const o=Object.assign({},l);if(o.src&&o.src.startsWith('paint:'))o.src=this.imgs[o.src].toDataURL();if(o.lm&&o.lm.startsWith('mask:'))o.lm=this.imgs[o.lm].toDataURL();return o})},
 get(){return this.layers.find(l=>l.id===this.sel)},
-add(o){this.snap();const l=Object.assign({id:'l'+(++this.n)+Date.now(),name:o.type,x:640,y:360,w:300,h:200,rot:0,op:1,vis:true,lock:false,fill:'#3b6fd4',stroke:'#000000',sw:0,sh:0,br:100,ct:100,sat:100,bl:0},o);this.layers.push(l);this.sel=l.id;this.ms=[l.id];return l},
+add(o){this.snap();const l=Object.assign({id:'l'+(++this.n)+Date.now(),name:o.type,x:CW/2,y:CH/2,w:300,h:200,rot:0,op:1,vis:true,lock:false,fill:'#3b6fd4',stroke:'#000000',sw:0,sh:0,br:100,ct:100,sat:100,bl:0},o);this.layers.push(l);this.sel=l.id;this.ms=[l.id];return l},
 dup(){if(!this.ms.length)return;this.snap();const g={},nid=[];for(const l of this.layers.filter(q=>this.ms.includes(q.id))){const c=JSON.parse(JSON.stringify(l));c.id='l'+(++this.n)+Date.now();c.x+=20;c.y+=20;if(c.grp){g[c.grp]=g[c.grp]||('g'+(++this.n));c.grp=g[c.grp]}this.layers.push(c);nid.push(c.id)}this.setSel(nid)},
 del(){if(!this.ms.length)return;this.snap();this.layers=this.layers.filter(l=>!this.ms.includes(l.id));this.sel=null;this.ms=[]},
 group(){if(this.ms.length<2)return;this.snap();const g='g'+(++this.n);this.layers.forEach(l=>{if(this.ms.includes(l.id))l.grp=g})},

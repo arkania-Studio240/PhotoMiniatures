@@ -1,6 +1,6 @@
 const PSD={bk:{'':'norm',multiply:'mul ',screen:'scrn',overlay:'over',darken:'dark',lighten:'lite','color-dodge':'div ','color-burn':'idiv','hard-light':'hLit','soft-light':'sLit',difference:'diff',exclusion:'smud',hue:'hue ',saturation:'sat ',color:'colr',luminosity:'lum '},
 async download(){const b=this.write(),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=(document.getElementById('pname').value||'miniatura')+'.psd';a.click()},
-write(){const W=1280,H=720,u16=n=>new Uint8Array([n>>8&255,n&255]),u32=n=>new Uint8Array([n>>>24&255,n>>>16&255,n>>>8&255,n&255]),str=s=>Uint8Array.from(s,c=>c.charCodeAt(0)&255);
+write(){const W=CW,H=CH,u16=n=>new Uint8Array([n>>8&255,n&255]),u32=n=>new Uint8Array([n>>>24&255,n>>>16&255,n>>>8&255,n&255]),str=s=>Uint8Array.from(s,c=>c.charCodeAt(0)&255);
 const cat=a=>{let n=0;a.forEach(x=>n+=x.length);const o=new Uint8Array(n);let p=0;a.forEach(x=>{o.set(x,p);p+=x.length});return o};
 const pad=(a,m)=>{const r=(m-a.length%m)%m;return r?cat([a,new Uint8Array(r)]):a};
 const c=document.createElement('canvas');c.width=W;c.height=H;const x=c.getContext('2d',{willReadFrequently:true});
@@ -35,7 +35,7 @@ const ok=[len,len+len%2,len+(4-len%4)%4].find(c=>st+c>=ee||['8BIM','8B64'].inclu
 p=ee;recs.push({t,l,b,r,chs,op,fl,name,sec,bkey})}
 for(const rc of recs){const w=rc.r-rc.l,h=rc.b-rc.t;rc.px={};for(const c of rc.chs){const st=p;if(w>0&&h>0&&c.len>2){const cm=r16();if(cm===0)rc.px[c.id]=u8.slice(p,p+w*h);else if(cm===1)rc.px[c.id]=unpack(p,p+h*2,h,w)[0]}p=st+c.len}}}
 p=liEnd}
-const inv=Object.fromEntries(Object.entries(this.bk).map(([a,b])=>[b,a])),k=Math.min(1280/Wd,720/H),ox=(1280-Wd*k)/2,oy=(720-H*k)/2,out=[];
+const inv=Object.fromEntries(Object.entries(this.bk).map(([a,b])=>[b,a])),k=Math.min(CW/Wd,CH/H),ox=(CW-Wd*k)/2,oy=(CH-H*k)/2,out=[];
 const mk=(name,w,h,px,l,t,op,vis)=>{const cv=document.createElement('canvas');cv.width=w;cv.height=h;const x=cv.getContext('2d'),id=x.createImageData(w,h);for(let i=0;i<w*h;i++){id.data[i*4]=px[0]?px[0][i]:0;id.data[i*4+1]=px[1]?px[1][i]:0;id.data[i*4+2]=px[2]?px[2][i]:0;id.data[i*4+3]=px[-1]?px[-1][i]:255}x.putImageData(id,0,0);
 return{type:'img',name:name||'Capa',src:cv.toDataURL('image/png'),x:ox+(l+w/2)*k,y:oy+(t+h/2)*k,w:w*k,h:h*k,rot:0,op:op,vis:vis}};
 for(const rc of recs){const w=rc.r-rc.l,h=rc.b-rc.t;if(rc.sec||w<=0||h<=0||!(rc.px[0]||rc.px[1]||rc.px[2]||rc.px[-1]))continue;{const o=mk(rc.name,w,h,rc.px,rc.l,rc.t,rc.op/255,!(rc.fl&2));o.bm=inv[rc.bkey]||'';out.push(o)}}
