@@ -1,13 +1,13 @@
 {
- "name": "Thumbnail Studio",
+ "name": "Thumbnail Studio 3.0",
  "short_name": "Thumbnails",
  "description": "Editor de miniaturas de YouTube",
  "start_url": "./index.html",
  "scope": "./",
  "display": "standalone",
  "orientation": "any",
- "background_color": "#1b1c1f",
- "theme_color": "#1b1c1f",
+ "background_color": "#111112",
+ "theme_color": "#111112",
  "icons": [
   {
    "src": "icon-192.png",
