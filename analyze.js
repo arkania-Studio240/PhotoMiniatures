@@ -29,5 +29,5 @@ const Analyze={
    if(b.x1>CW*.84&&b.y1>CH*.86)R.push(['warn',nm+' queda en la esquina inferior derecha, donde YouTube muestra la duración del video.']);
    if(b.x0<CW*.03||b.x1>CW*.97||b.y0<CH*.03||b.y1>CH*.97)R.push(['warn',nm+' está muy cerca del borde; puede recortarse según el dispositivo.'])}
   return R},
- html(){const R=this.run(),ic={ok:'✔',warn:'⚠',tip:'•'},col={ok:'#5fbf7a',warn:'#ffb347',tip:'#8d8d94'};return'<h4>Análisis</h4>'+R.map(r=>`<p style="margin:6px 0"><span style="color:${col[r[0]]}">${ic[r[0]]}</span> ${r[1]}</p>`).join('')+'<p><small>Heurísticas orientativas calculadas en tu dispositivo (estimaciones, no medición exacta). No predicen clics ni CTR.</small></p>'}};
+ html(){const R=this.run(),ic={ok:Ic('check',16),warn:Ic('alert',16),tip:Ic('dot',16)},col={ok:'#5fbf7a',warn:'#ffb347',tip:'#8d8d94'};return'<h4>Análisis</h4>'+R.map(r=>`<p style="margin:6px 0"><span style="color:${col[r[0]]}">${ic[r[0]]}</span> ${r[1]}</p>`).join('')+'<p><small>Heurísticas orientativas calculadas en tu dispositivo (estimaciones, no medición exacta). No predicen clics ni CTR.</small></p>'}};
 const _prev=App.prev;App.prev=function(){_prev.call(this);try{document.getElementById('mBody').insertAdjacentHTML('beforeend',Analyze.html())}catch(e){console.error(e)}};

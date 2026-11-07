@@ -55,3 +55,27 @@ body[data-sh=left] #left{display:block}body[data-sh=props] #right,body[data-sh=l
 
 #hist{max-height:220px;overflow:auto}#hist .ly{padding:5px 8px;border-radius:8px;cursor:pointer;border:1px solid transparent;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}#hist .ly:hover{background:var(--p2)}#hist .ly.on{background:#e5383b26;border-color:#e5383b55}#hist .fut{opacity:.45}body[data-sh=props] #secH{display:none}
 .hint{display:block;color:var(--mut);font-size:11px;line-height:1.4;padding:5px 2px;grid-column:1/-1}
+
+/* ---- Interfaz tipo app Android: iconos, objetivos táctiles y barra inferior ---- */
+html{-webkit-tap-highlight-color:transparent}body{overscroll-behavior:none}button{touch-action:manipulation}
+.ic{width:20px;height:20px;flex:none;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.icb{min-width:44px;min-height:44px;display:inline-flex;align-items:center;justify-content:center;padding:0;border-radius:12px}
+.tile{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;min-height:68px;padding:10px 4px;border-radius:14px;font-size:11px;line-height:1.15;text-align:center}
+.tile .ic{width:22px;height:22px}.tile.on,.tile.on .ic{color:#fff}
+.grid:has(.tile){grid-template-columns:repeat(3,1fr)}
+.tabs button.icb{padding:0;width:44px;height:44px;border-radius:12px}
+#bPrev.tile{flex-direction:row;min-height:40px;padding:0 12px;gap:6px;font-size:13px}
+input[type=range]{min-height:32px}
+@media(max-width:800px){
+ #nav button{min-height:58px;font-size:10.5px;position:relative;gap:3px}
+ #nav button .ic,#nav button svg{width:22px;height:22px}
+ #nav button.on::before{content:"";position:absolute;top:0;width:26px;height:3px;border-radius:0 0 3px 3px;background:var(--ac)}
+ #bPrev span{display:none}#bPrev.tile{min-width:44px;padding:0;justify-content:center}
+}
+
+.zoom{display:flex;align-items:center;gap:4px}.zoom input[type=range]{flex:1;min-width:60px}.zp{min-width:54px;min-height:40px;padding:0 8px;font-size:12px;font-variant-numeric:tabular-nums;border-radius:10px;color:var(--mut)}
+
+#pvW{background:#fff;color:#111}#pvW .ic{color:#111}#pvK{background:#000;color:#fff}#pvC.on,#pvW.on,#pvK.on{outline:2px solid var(--ac)}
+details.fold{border-top:1px solid var(--bd);margin-top:8px;padding-top:2px}
+details.fold>summary{list-style:none;display:flex;align-items:center;justify-content:space-between;min-height:44px;cursor:pointer;font-weight:600;font-size:13px;letter-spacing:.02em;color:var(--mut)}
+details.fold>summary::-webkit-details-marker{display:none}details.fold[open]>summary{color:#ececee}details.fold[open]>summary .ic{transform:rotate(180deg)}

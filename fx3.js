@@ -2,7 +2,11 @@
 Ed.extra=function(l,R){
  const W=CW,H=CH,tint=(src,color,dst)=>{const x=dst.getContext('2d');x.globalCompositeOperation='source-over';x.clearRect(0,0,W,H);x.drawImage(src,0,0);x.globalCompositeOperation='source-in';x.fillStyle=color;x.fillRect(0,0,W,H);x.globalCompositeOperation='source-over'};
  let out=R;
- if(l.e_s2){const r=l.e_s2s??8,S=this.pool(4),T=this.pool(5),t=T.getContext('2d');tint(out,l.e_s2c||'#ffffff',S);t.clearRect(0,0,W,H);for(let k=0;k<16;k++){const a=k/16*6.2832;t.drawImage(S,Math.cos(a)*r,Math.sin(a)*r)}for(let k=0;k<8;k++){const a=k/8*6.2832;t.drawImage(S,Math.cos(a)*r/2,Math.sin(a)*r/2)}t.drawImage(out,0,0);out=T}
+ for(const k of ['e_s2','e_s3'])if(l[k]){const r=l[k+'s']??8,S=this.pool(4),T=this.pool(k==='e_s2'?5:10),t=T.getContext('2d');tint(out,l[k+'c']||'#ffffff',S);t.clearRect(0,0,W,H);for(let k=0;k<16;k++){const a=k/16*6.2832;t.drawImage(S,Math.cos(a)*r,Math.sin(a)*r)}for(let k=0;k<8;k++){const a=k/8*6.2832;t.drawImage(S,Math.cos(a)*r/2,Math.sin(a)*r/2)}t.drawImage(out,0,0);out=T}
  if(l.e_ex){const d=l.e_exd??20,a=(l.e_exa??45)*Math.PI/180,S=this.pool(4),T=this.pool(6),t=T.getContext('2d'),st=Math.max(1,d/40);tint(out,l.e_exc||'#8a1c1f',S);t.clearRect(0,0,W,H);for(let k=d;k>=1;k-=st)t.drawImage(S,Math.cos(a)*k,Math.sin(a)*k);t.drawImage(out,0,0);out=T}
+ if(l.e_pp||l.e_pv){const a=(l.e_pp||0)/100,b=(l.e_pv||0)/100,cx=l.x,cy=l.y;let src=out;
+  if(a){const T=this.pool(11),t=T.getContext('2d');t.clearRect(0,0,W,H);for(let x=0;x<W;x+=2){const f=Math.max(.15,1+a*(x-cx)/(W/2));t.drawImage(src,x,0,2,H,x,cy-cy*f,2,H*f)}src=T}
+  if(b){const T=this.pool(12),t=T.getContext('2d');t.clearRect(0,0,W,H);for(let y=0;y<H;y+=2){const f=Math.max(.15,1+b*(y-cy)/(H/2));t.drawImage(src,0,y,W,2,cx-cx*f,y,W*f,2)}src=T}
+  out=src}
  if(l.e_rg){const m=l.e_rga??6,C=this.pool(7),c=C.getContext('2d'),T=this.pool(8),t=T.getContext('2d');t.clearRect(0,0,W,H);t.globalCompositeOperation='lighter';[['#ff0000',-m],['#00ff00',0],['#0000ff',m]].forEach(q=>{c.globalCompositeOperation='source-over';c.clearRect(0,0,W,H);c.drawImage(out,0,0);c.globalCompositeOperation='multiply';c.fillStyle=q[0];c.fillRect(0,0,W,H);c.globalCompositeOperation='destination-in';c.drawImage(out,0,0);c.globalCompositeOperation='source-over';t.drawImage(C,q[1],0)});t.globalCompositeOperation='source-over';out=T}
  return out};
