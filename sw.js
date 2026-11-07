@@ -1,4 +1,4 @@
-const C='ts-v28',A=['./','index.html','styles.css','app.js','editor.js','layers.js','history.js','assets.js','templates.js','export.js','psd.js','fx.js','ai.js','fx3.js','zoom.js','polish.js','ai2.js','lyr.js','fx4.js','i18n.js','sam.js','analyze.js','storage.js','icons.js','manifest.json','icon-192.png','icon-512.png'];
+const C='ts-v30',A=['./','index.html','styles.css','app.js','editor.js','layers.js','history.js','assets.js','templates.js','export.js','psd.js','fx.js','ai.js','fx3.js','zoom.js','polish.js','ai2.js','webui.js','android.js','lyr.js','fx4.js','i18n.js','sam.js','analyze.js','storage.js','icons.js','manifest.json','icon-192.png','icon-512.png'];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(C).then(c=>c.addAll(A)));self.skipWaiting()});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x!==C).map(x=>caches.delete(x)))));self.clients.claim()});
 self.addEventListener('fetch',e=>{if(e.request.method!=='GET')return;e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request).then(res=>{const cp=res.clone();caches.open(C).then(c=>c.put(e.request,cp));return res}).catch(()=>r)))});

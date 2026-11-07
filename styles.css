@@ -29,7 +29,7 @@ input[type=range]{padding:0;accent-color:var(--ac);background:transparent;border
 .dg{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}.dc{background:var(--p1);border-radius:12px;overflow:hidden;cursor:pointer;border:1px solid var(--bd);transition:border-color .15s,transform .15s}.dc:hover{border-color:var(--ac);transform:translateY(-2px)}.dc canvas,.dc img{width:100%;display:block}.dc div{padding:8px 10px}
 .chips{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0}.chips button{border-radius:999px}.chips .on{background:var(--ac);border-color:var(--ac);color:#fff}#dash .top{display:flex;gap:10px;flex-wrap:wrap;align-items:center}#dash .top input{flex:1;min-width:160px}
 #nav,#qa{display:none}
-@media(max-width:800px){
+@media(max-width:800px),(max-height:520px) and (pointer:coarse){
 header{gap:2px;padding-left:6px;padding-right:6px}#pname{flex:1;width:auto}.sp{display:none}#bPrev,#bExp{display:none}.ib{width:40px;height:40px}
 button,input,select{min-height:40px;font-size:15px}
 main{flex-direction:column;overflow:hidden}#mid{order:1;flex:1;min-height:0}.zoom{display:none}#wrap{padding:12px}#cv{width:100%!important}
@@ -66,7 +66,7 @@ html{-webkit-tap-highlight-color:transparent}body{overscroll-behavior:none}butto
 .tabs button.icb{padding:0;width:44px;height:44px;border-radius:12px}
 #bPrev.tile{flex-direction:row;min-height:40px;padding:0 12px;gap:6px;font-size:13px}
 input[type=range]{min-height:32px}
-@media(max-width:800px){
+@media(max-width:800px),(max-height:520px) and (pointer:coarse){
  #nav button{min-height:58px;font-size:10.5px;position:relative;gap:3px}
  #nav button .ic,#nav button svg{width:22px;height:22px}
  #nav button.on::before{content:"";position:absolute;top:0;width:26px;height:3px;border-radius:0 0 3px 3px;background:var(--ac)}
@@ -79,3 +79,53 @@ input[type=range]{min-height:32px}
 details.fold{border-top:1px solid var(--bd);margin-top:8px;padding-top:2px}
 details.fold>summary{list-style:none;display:flex;align-items:center;justify-content:space-between;min-height:44px;cursor:pointer;font-weight:600;font-size:13px;letter-spacing:.02em;color:var(--mut)}
 details.fold>summary::-webkit-details-marker{display:none}details.fold[open]>summary{color:#ececee}details.fold[open]>summary .ic{transform:rotate(180deg)}
+
+/* ---- Escritorio: barra lateral de iconos, cabecera y detalles de acabado ---- */
+*{scrollbar-width:thin;scrollbar-color:#3b3b40 transparent}
+:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+.brand,.lb{display:none}
+@media(min-width:801px) and (min-height:521px){
+ header{gap:8px;padding:6px 14px;min-height:52px}
+ .brand{display:flex;align-items:center;gap:8px;font-weight:700;font-size:14px;letter-spacing:.01em;padding-right:12px;margin-right:4px;border-right:1px solid var(--bd);white-space:nowrap}
+ .brand .ic{color:var(--ac)}.brand b{color:var(--ac);font-weight:700}
+ #bHome{display:none}
+ #pname{width:220px;border-radius:8px}#pname:hover{background:var(--p2);border-color:var(--bd)}
+ #bUndo,#bRedo{border-radius:8px}#bUndo:hover,#bRedo:hover,#bMore:hover{background:var(--p2)}
+ #bPrev{display:inline-flex;align-items:center;gap:6px;min-height:36px;padding:0 14px;flex-direction:row}
+ #bExp{padding:8px 20px;border-radius:9px;box-shadow:0 2px 14px #e5383b40}
+ #left.split{display:flex;width:340px;padding:0;overflow:visible;position:relative;z-index:3}
+ #left.split #ltabs{flex-direction:column;flex:none;width:64px;gap:2px;padding:10px 6px;margin:0;top:0;position:static;overflow:visible;border-right:1px solid var(--bd);background:var(--p1)}
+ #left.split #ltabs button{position:relative;width:100%;height:56px;min-width:0;min-height:0;flex-direction:column;gap:3px;padding:6px 0;border-radius:10px;font-size:10px;color:var(--mut)}
+ #left.split #ltabs button .lb{display:block;line-height:1;letter-spacing:.01em}
+ #left.split #ltabs button:hover{background:var(--p2);color:var(--tx)}
+ #left.split #ltabs button.on{background:#e5383b1f;color:#fff}#left.split #ltabs button.on .ic{color:var(--ac)}
+ #left.split #ltabs button.on::before{content:"";position:absolute;left:-6px;top:12px;bottom:12px;width:3px;border-radius:0 3px 3px 0;background:var(--ac)}
+ #left.split .lbody{flex:1;min-width:0;overflow:auto;padding:14px}
+ #right{width:300px}
+ .zoom{justify-content:center;padding:4px 10px}.zoom input[type=range]{flex:none;width:200px}
+ #wrap{background:radial-gradient(#26262a 1px,transparent 1px) 0 0/22px 22px,#0a0a0b}
+ aside h4{margin-top:16px}
+ #props>label,#props .row{padding:0 2px}
+ #layers .ly:hover,#hist .ly:hover{background:var(--p2)}
+ button:hover{border-color:#3b3b40}
+}
+@media(min-width:801px) and (min-height:521px) and (max-width:1100px){#left.split{width:300px}#right{width:260px}#pname{width:140px}}
+@media(min-width:1500px){#left.split{width:380px}#right{width:340px}.grid:has(.tile){grid-template-columns:repeat(4,1fr)}}
+
+/* ---- Android: hoja arrastrable, etiquetas en pestañas, selección y horizontal ---- */
+button,.tabs,#nav,#layers .ly,#hist .ly,.tc,.grab,#qa,canvas{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+@media(max-width:800px),(max-height:520px) and (pointer:coarse){
+ aside{height:var(--sh,46vh)!important;transition:height .18s ease}
+ .dragging aside{transition:none;animation:none}
+ .grab{height:6px;touch-action:none}
+ #ltabs button .lb{display:block;font-size:10px;line-height:1}
+ .tabs button.icb{width:60px;height:56px;flex-direction:column;gap:4px;padding:6px 0;color:var(--mut)}
+ .tabs button.icb.on{color:#fff}
+}
+@media(max-height:520px) and (pointer:coarse) and (orientation:landscape){
+ header{min-height:44px;padding-top:calc(4px + env(safe-area-inset-top))}
+ main{flex-direction:row!important}
+ aside{height:auto!important;width:min(340px,44vw)!important;order:2;border-radius:0!important;border:0;border-left:1px solid var(--bd);box-shadow:none;animation:none}
+ .grab{display:none!important}
+ #nav{padding-top:2px}#nav button{min-height:44px;flex-direction:row;gap:6px;justify-content:center;font-size:12px}
+}
