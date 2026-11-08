@@ -1,0 +1,30 @@
+/* Atajos de teclado personalizables y paleta de acciones rápidas (Ctrl+K), útil también en pantallas táctiles.
+   Este módulo atiende los atajos en fase de captura: las teclas por defecto de las acciones que aquí se reasignan dejan de funcionar con su tecla anterior. */
+const Keys={
+ A:[['move','Herramienta Mover','v',()=>App.setTool('move')],['brush','Pincel','b',()=>App.setTool('brush')],['eraser','Borrador','e',()=>App.setTool('eraser')],['rect','Selección rectangular','m',()=>App.setTool('rect')],['lasso','Lazo','l',()=>App.setTool('lasso')],['wand','Varita mágica','w',()=>App.setTool('wand')],['pick','Cuentagotas','i',()=>App.setTool('pick')],['pen','Pluma','p',()=>App.setTool('pen')],
+  ['text','Añadir texto','t',()=>{L.add({type:'text',name:'Texto',text:'TU TEXTO',size:120,fill:'#ffffff',stroke:'#000000',sw:12,sh:10,font:'Impact'});App.refresh()}],
+  ['undo','Deshacer','ctrl+z',()=>{L.undo();App.refresh()}],['redo','Rehacer','ctrl+y',()=>{L.redo();App.refresh()}],['save','Guardar proyecto','ctrl+s',()=>App.save()],['dup','Duplicar capa','ctrl+d',()=>{L.dup();App.refresh()}],['del','Eliminar capa','delete',()=>{L.del();App.refresh()}],['group','Agrupar','ctrl+g',()=>{L.group();App.refresh()}],['ungroup','Desagrupar','ctrl+shift+g',()=>{L.ungroup();App.refresh()}],
+  ['fit','Ajustar lienzo a la pantalla','0',()=>Ed.fit()],['zin','Acercar','+',()=>Ed.zoomStep(1.25)],['zout','Alejar','-',()=>Ed.zoomStep(.8)],
+  ['insp','Inspector de calidad','alt+i',()=>Keys.need(()=>Insp.show())],['sim','Simulador de YouTube','alt+s',()=>Keys.need(()=>Sim.show())],['a11y','Accesibilidad visual','alt+a',()=>Keys.need(()=>A11y.show())],['ab','Comparar A/B y variantes','alt+b',()=>Keys.need(()=>Var.show())],['ver','Versiones y restauración','alt+v',()=>Keys.need(()=>Ver.show())],['lay','Smart Layout','alt+l',()=>Keys.need(()=>Lay.show())],['typo','Tipografía avanzada','alt+t',()=>Keys.need(()=>Typo.show())],['exp','Exportar','alt+e',()=>App.exp()],['pal','Acciones rápidas','ctrl+k',()=>Keys.palette()],['keys','Atajos de teclado','alt+k',()=>Keys.edit()]],
+ u:{},cap:null,
+ need(f){if(!L.layers.length)return App.toast('El lienzo está vacío: añade elementos primero');f()},
+ load(){try{this.u=JSON.parse(localStorage.getItem('ts_keys')||'{}')}catch(e){this.u={}}},
+ save(){try{localStorage.setItem('ts_keys',JSON.stringify(this.u))}catch(e){}},
+ bind(id){const a=this.A.find(x=>x[0]===id);return id in this.u?this.u[id]:a[2]},
+ norm(ev){const k=ev.key;if(['Control','Shift','Alt','Meta'].includes(k))return '';let n=(ev.altKey&&/^(Key[A-Z]|Digit\d)$/.test(ev.code))?ev.code.slice(-1).toLowerCase():k.toLowerCase();if(n===' ')n='space';const m=[];if(ev.ctrlKey||ev.metaKey)m.push('ctrl');if(ev.altKey)m.push('alt');if(ev.shiftKey&&(n.length>1||/[a-z0-9]/.test(n)))m.push('shift');return[...m,n].join('+')},
+ show(s){return s?s.split('+').map(p=>({ctrl:'Ctrl',alt:'Alt',shift:'Mayús',delete:'Supr',escape:'Esc',space:'Espacio'}[p]||p.toUpperCase())).join(' + '):'Sin asignar'},
+ map(){const m=new Map();this.A.forEach(a=>{const b=this.bind(a[0]);if(b)m.set(b,a)});return m},
+ defaults(){return new Set(this.A.map(a=>a[2]))},
+ palette(){let q='';const draw=()=>{const l=this.A.filter(a=>a[1].toLowerCase().includes(q.toLowerCase()));document.getElementById('kList').innerHTML=l.length?l.map(a=>'<button class="kp" data-a="'+a[0]+'"><span>'+a[1]+'</span><kbd>'+this.show(this.bind(a[0]))+'</kbd></button>').join(''):'<p class="empty">Ninguna acción coincide.</p>';document.querySelectorAll('#kList .kp').forEach(b=>b.onclick=()=>{document.getElementById('modal').hidden=true;setTimeout(()=>this.A.find(a=>a[0]===b.dataset.a)[3](),30)})};
+  Pro.modal('<h3>Acciones rápidas</h3><div class="dsearch">'+Ic('search',18)+'<input id="kQ" placeholder="Escribe una acción…" autocomplete="off"></div><div id="kList" class="klist"></div>');draw();const i=document.getElementById('kQ');i.oninput=()=>{q=i.value;draw()};setTimeout(()=>i.focus(),50);i.onkeydown=e=>{if(e.key==='Enter'){const f=document.querySelector('#kList .kp');f&&f.click()}}},
+ edit(){const rows=this.A.map(a=>{const b=this.bind(a[0]),ch=a[0] in this.u;return '<tr><td>'+a[1]+'</td><td><kbd>'+this.show(b)+'</kbd></td><td class="kb"><button data-c="'+a[0]+'">Cambiar</button>'+(ch?'<button data-r="'+a[0]+'" class="icb" title="Restablecer" aria-label="Restablecer">'+Ic('back',16)+'</button>':'')+(b?'<button data-x="'+a[0]+'" class="icb" title="Quitar" aria-label="Quitar">'+Ic('x',16)+'</button>':'')+'</td></tr>'}).join('');
+  Pro.modal('<h3>Atajos de teclado</h3><p><small>Pulsa «Cambiar» y luego la combinación nueva (Esc cancela). Las teclas por defecto de una acción reasignada dejan de funcionar. En pantallas táctiles usa «Acciones rápidas».</small></p><div style="overflow-x:auto"><table class="ct">'+rows+'</table></div><div class="szc"><button id="kAll">Restablecer todos</button></div>',true);
+  const again=()=>this.edit();
+  document.querySelectorAll('#mBody [data-c]').forEach(b=>b.onclick=()=>{b.textContent='Pulsa la combinación…';this.cap=ev=>{const s=this.norm(ev);if(!s)return;ev.preventDefault();this.cap=null;if(ev.key==='Escape')return again();const o=[...this.map()].find(([k,a])=>k===s&&a[0]!==b.dataset.c);if(o){App.toast('Esa combinación ya la usa «'+o[1][1]+'»');return again()}this.u[b.dataset.c]=s;this.save();again()}});
+  document.querySelectorAll('#mBody [data-r]').forEach(b=>b.onclick=()=>{delete this.u[b.dataset.r];this.save();again()});
+  document.querySelectorAll('#mBody [data-x]').forEach(b=>b.onclick=()=>{this.u[b.dataset.x]='';this.save();again()});
+  document.getElementById('kAll').onclick=async()=>{if(await Pro.ask('¿Restablecer todos los atajos a sus valores originales?','Restablecer')){this.u={};this.save()}again()}}};
+Keys.load();
+document.addEventListener('keydown',ev=>{if(Keys.cap)return Keys.cap(ev);if(/INPUT|SELECT|TEXTAREA/.test(ev.target.tagName)||ev.target.isContentEditable)return;const s=Keys.norm(ev);if(!s)return;const a=Keys.map().get(s);
+ if(a){ev.preventDefault();ev.stopImmediatePropagation();a[3]();return}
+ if(Keys.defaults().has(s)){ev.preventDefault();ev.stopImmediatePropagation()}},true);

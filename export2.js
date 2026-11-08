@@ -12,7 +12,7 @@ const Xp={
   const lossy=p.fmt!=='image/png';let q=p.q||.92,b=await this.blob(c,p.fmt,lossy?q:undefined),it=1;
   if(lossy&&p.maxKB){let lo=.3,hi=q;if(b.size/1024>p.maxKB){while(it<8){q=(lo+hi)/2;b=await this.blob(c,p.fmt,q);if(b.size/1024>p.maxKB)hi=q;else lo=q;it++}q=lo;b=await this.blob(c,p.fmt,q)}}
   return{c,b,q:lossy?q:null,lossy}},
- psnr(a,i){const w=a.width,h=a.height,t=document.createElement('canvas');t.width=w;t.height=h;t.getContext('2d').drawImage(i,0,0,w,h);const d1=a.getContext('2d').getImageData(0,0,w,h).data,d2=t.getContext('2d').getImageData(0,0,w,h).data;let s=0,n=0;for(let k=0;k<d1.length;k+=4){const al=d1[k+3]/255;for(let j=0;j<3;j++){const e=d1[k+j]-d2[k+j];s+=e*e*al;n+=al}}const m=s/(n||1);return m<1e-9?99:10*Math.log10(255*255/m)},
+ psnr(a,i){const w=a.width,h=a.height,t=document.createElement('canvas');t.width=w;t.height=h;t.getContext('2d').drawImage(i,0,0,w,h);const d1=a.getContext('2d').getImageData(0,0,w,h).data,d2=t.getContext('2d').getImageData(0,0,w,h).data;return Work.call('psnr',[d1,d2])},
  warn(c,b,p){const w=[],kb=b.size/1024;if(c.width<640)w.push(['e','El ancho ('+c.width+' px) es menor que el mínimo de YouTube (640 px): se rechazaría.']);else if(c.width<1280||c.height<720)w.push(['w','Menor que la resolución recomendada de 1280×720.']);
   if(Math.abs(c.width/c.height-16/9)>.01)w.push(['w','La relación de aspecto no es 16:9: YouTube puede añadir bandas o recortar.']);
   if(kb>2048)w.push(['w','Pesa más de 2 MB: subida desde móvil limitada a 2 MB (YouTube indica 50 MB desde ordenador; confírmalo en su ayuda).']);
@@ -29,7 +29,7 @@ const Xp={
  async calc(){const my=++this.run,box=document.getElementById('xI');if(!box)return;const p=this.settings();if(p.psd){box.innerHTML='<p>Se exportará un archivo PSD con tus capas (soporte de capas, máscaras básicas y texto rasterizado según la implementación existente). El tamaño depende de las imágenes.</p>';document.getElementById('xD').disabled=false;return}
   box.innerHTML='<p class="empty">Calculando…</p>';let r;try{r=await this.build(p)}catch(e){console.error(e);box.innerHTML='<p class="empty">No se pudo generar el archivo. Prueba con un tamaño de lienzo menor.</p>';return}
   if(my!==this.run)return;this.last={p,r};const kb=r.b.size/1024,ws=this.warn(r.c,r.b,p);let png=null,ps='',iu='',ou='';
-  try{this.urls.forEach(u=>URL.revokeObjectURL(u));this.urls=[];ou=URL.createObjectURL(r.b);this.urls.push(ou);const im=await this.img(ou);if(my!==this.run)return;if(r.lossy&&!p.tr){const pn=this.psnr(r.c,im);ps=pn>=40?'prácticamente idéntica':pn>=35?'muy buena':pn>=30?'buena (puede notarse en degradados)':'con pérdida visible';png=pn}
+  try{this.urls.forEach(u=>URL.revokeObjectURL(u));this.urls=[];ou=URL.createObjectURL(r.b);this.urls.push(ou);const im=await this.img(ou);if(my!==this.run)return;if(r.lossy&&!p.tr){const pn=await this.psnr(r.c,im);ps=pn>=40?'prácticamente idéntica':pn>=35?'muy buena':pn>=30?'buena (puede notarse en degradados)':'con pérdida visible';png=pn}
    const pb=await this.blob(r.c,'image/png');iu=URL.createObjectURL(pb);this.urls.push(iu);this.pngKB=pb.size/1024}catch(e){console.error(e)}
   if(my!==this.run)return;
   const sav=r.lossy&&this.pngKB?Math.round((1-kb/this.pngKB)*100):0;

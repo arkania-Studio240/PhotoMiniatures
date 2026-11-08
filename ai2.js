@@ -6,10 +6,8 @@ const AI2={
  bg(){const l=this.img();if(l)App.aiRemoveBg(l,document.getElementById('aiBg'))},
  up(){const l=this.img();if(!l)return;const im=L.img(l.src,()=>{});if(!im.complete||!im.naturalWidth)return App.toast('La imagen aún se está cargando');
   const w=im.naturalWidth*2,h=im.naturalHeight*2;if(w>4096||h>4096||w*h>16e6)return App.toast('La imagen es demasiado grande para ampliar (máx. 4096 px)');
-  App.toast('Ampliando…');setTimeout(()=>{try{const c=document.createElement('canvas');c.width=w;c.height=h;const x=c.getContext('2d');x.imageSmoothingQuality='high';x.drawImage(im,0,0,w,h);
-   const d=x.getImageData(0,0,w,h),s=d.data,o=new Uint8ClampedArray(s),k=.5;
-   for(let y=1;y<h-1;y++)for(let xx=1;xx<w-1;xx++){const i=(y*w+xx)*4;for(let ch=0;ch<3;ch++)o[i+ch]=s[i+ch]*(1+4*k)-k*(s[i+ch-4]+s[i+ch+4]+s[i+ch-w*4]+s[i+ch+w*4])}
-   d.data.set(o);x.putImageData(d,0,0);const{id,...rest}=l;L.add(Object.assign({},rest,{name:(l.name||'Imagen')+' x2',src:Ed.reg('paint',c),paint:true}));l.vis=false;App.refresh();App.toast('Ampliada a '+w+'×'+h+' (la original queda oculta)')}catch(e){console.error(e);App.toast('No se pudo ampliar')}},30)},
+  App.toast('Ampliando…');setTimeout(async()=>{try{const c=document.createElement('canvas');c.width=w;c.height=h;const x=c.getContext('2d');x.imageSmoothingQuality='high';x.drawImage(im,0,0,w,h);
+   const d=x.getImageData(0,0,w,h),o=await Work.call('sharpen',[d.data,w,h,.5]);x.putImageData(new ImageData(new Uint8ClampedArray(o.buffer?o.buffer:o),w,h),0,0);const{id,...rest}=l;L.add(Object.assign({},rest,{name:(l.name||'Imagen')+' x2',src:Ed.reg('paint',c),paint:true}));l.vis=false;App.refresh();App.toast('Ampliada a '+w+'×'+h+' (la original queda oculta)')}catch(e){console.error(e);App.toast('No se pudo ampliar')}},30)},
  light(dir){const l=this.sel();if(!l)return;const c=Ed.mk(),x=c.getContext('2d'),p={l:[0,CH/2],r:[CW,CH/2],t:[CW/2,0],c:[CW/2,CH/2]}[dir],g=x.createRadialGradient(p[0],p[1],0,p[0],p[1],dir==='c'?CW*.55:CW*.85);
   g.addColorStop(0,'rgba(255,244,214,1)');g.addColorStop(.55,'rgba(255,244,214,.25)');g.addColorStop(1,'rgba(255,244,214,0)');x.fillStyle=g;x.fillRect(0,0,CW,CH);
   const nl=L.add({type:'img',name:'Luz',paint:true,src:Ed.reg('paint',c),x:CW/2,y:CH/2,w:CW,h:CH,bm:'soft-light',op:.8,clip:true});L.layers.pop();L.layers.splice(L.layers.indexOf(l)+1,0,nl);L.setSel([nl.id]);App.refresh();App.toast('Luz añadida: se recorta a la capa de abajo')},
